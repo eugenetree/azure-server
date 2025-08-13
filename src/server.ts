@@ -1,5 +1,5 @@
 let appInsights = require("applicationinsights");
-appInsights.setup();
+appInsights.setup().start();
 
 import * as http from 'http';
 
