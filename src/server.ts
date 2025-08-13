@@ -1,5 +1,5 @@
 let appInsights = require("applicationinsights");
-appInsights.setup().start();
+appInsights.setup().setAutoCollectConsole(true).start();
 
 import * as http from 'http';
 
