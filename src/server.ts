@@ -1,3 +1,6 @@
+let appInsights = require("applicationinsights");
+appInsights.setup();
+
 import * as http from 'http';
 
 const server = http.createServer((req, res) => {
@@ -6,7 +9,14 @@ const server = http.createServer((req, res) => {
     const date = new Date().toISOString();
     console.log('debug: date', date);
     res.end(date);
-  } else {
+  } else if (req.method === 'GET' && req.url === '/health') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('OK');
+  } else if (req.method === 'GET' && req.url === '/env') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end(`${process.env.APPLICATIONINSIGHTS_CONNECTION_STRING} ${JSON.stringify(process.env)}`);
+  }
+  else {
     console.log('debug: req.url', req.url);
     res.writeHead(404, { 'Content-Type': 'text/plain' });
     res.end('Not Found');
