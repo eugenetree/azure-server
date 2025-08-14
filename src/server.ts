@@ -1,7 +1,7 @@
 let appInsights = require("applicationinsights");
 appInsights
-  .setup("InstrumentationKey=a7f8a439-dc61-45c3-b3b9-436eaff36017;IngestionEndpoint=https://germanywestcentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://germanywestcentral.livediagnostics.monitor.azure.com/;ApplicationId=e703b063-04df-4de9-8b75-75c21121a56f")
-  .setAutoCollectConsole(true)
+  .setup()
+  .setAutoCollectConsole(true, true)
   .start();
 
 import * as http from 'http';
