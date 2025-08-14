@@ -2,6 +2,12 @@ let appInsights = require("applicationinsights");
 appInsights
   .setup()
   .setAutoCollectConsole(true, true)
+  .setAutoCollectExceptions(true)
+  .setAutoCollectPerformance(true)
+  .setAutoCollectRequests(true)
+  .setAutoCollectDependencies(true)
+  .setAutoCollectHttpDependencies(true)
+  .setUseDiskRetryCaching(true)
   .start();
 
 import * as http from 'http';
