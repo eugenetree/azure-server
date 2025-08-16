@@ -26,15 +26,6 @@ const server = http.createServer((req, res) => {
         const sourceCode = fs.readFileSync(distPath, "utf8");
         res.writeHead(200, { "Content-Type": "text/plain" });
         res.end(sourceCode);
-
-        // Отправляем событие в Application Insights
-        const client = appInsights.defaultClient;
-        if (client) {
-          client.trackEvent({
-            name: "DistFileAccessed",
-            properties: { filePath: distPath },
-          });
-        }
       } else {
         res.writeHead(404, { "Content-Type": "text/plain" });
         res.end(`File not found: ${distPath}`);
@@ -57,25 +48,8 @@ const server = http.createServer((req, res) => {
 const port = process.env.PORT || 3000;
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);
-
-  // Отправляем событие о запуске сервера
-  const client = appInsights.defaultClient;
-  if (client) {
-    client.trackEvent({
-      name: "ServerStarted",
-      properties: { port: port },
-    });
-    console.log("Application Insights client initialized");
-  } else {
-    console.log("Application Insights client not available");
-  }
 });
 
-// Принудительно отправляем данные при завершении
 process.on("SIGINT", () => {
-  const client = appInsights.defaultClient;
-  if (client) {
-    client.flush();
-  }
   process.exit(0);
 });
