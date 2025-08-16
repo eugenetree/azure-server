@@ -23,6 +23,8 @@ try {
     .setAutoCollectConsole(true, true)
     .setAutoCollectExceptions(true)
     .setAutoCollectRequests(true)
+    .setAutoCollectPerformance(true, true)
+    .setAutoCollectDependencies(true)
     .start();
 
   console.log("Application Insights initialized successfully");
