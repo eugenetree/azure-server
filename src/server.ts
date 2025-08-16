@@ -65,8 +65,8 @@ const server = http.createServer((req, res) => {
 
     res.end(date);
   } else if (req.method === "GET" && req.url === "/health") {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("OK");
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end("<html><body><h1>OK lalalal</h1></body></html>");
   } else if (req.method === "GET" && req.url === "/env") {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end(
