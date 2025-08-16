@@ -1,5 +1,7 @@
 import * as http from "http";
 import * as appInsights from "applicationinsights";
+import * as fs from "fs";
+import * as path from "path";
 
 // Используем переменную окружения для connection string
 const connectionString =
@@ -87,6 +89,36 @@ const server = http.createServer((req, res) => {
       res.end("Application Insights test events sent");
     } else {
       res.end("Application Insights client not available");
+    }
+  } else if (req.method === "GET" && req.url === "/dist") {
+    // Показываем исходный код скомпилированного server.js
+    const distPath = path.join(__dirname, "..", "dist", "server.js");
+
+    try {
+      if (fs.existsSync(distPath)) {
+        const sourceCode = fs.readFileSync(distPath, "utf8");
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        res.end(sourceCode);
+
+        // Отправляем событие в Application Insights
+        const client = appInsights.defaultClient;
+        if (client) {
+          client.trackEvent({
+            name: "DistFileAccessed",
+            properties: { filePath: distPath },
+          });
+        }
+      } else {
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end(`File not found: ${distPath}`);
+      }
+    } catch (error) {
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end(
+        `Error reading file: ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
     }
   } else {
     console.log("debug: req.url", req.url);
